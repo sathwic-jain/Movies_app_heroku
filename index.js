@@ -5,11 +5,13 @@ import express from "express";
 import dotenv from "dotenv";
 import { GetMovieById, DeleteMovieByID, AddMovie, GetMovie, EditMovieByName } from "./helper.js";
 dotenv.config();
+import cors from "cors";
 console.log(process.env.MONGO_URL);
 
 const app = express();
 const PORT =  process.env.PORT ||9000;
 app.use(express.json());//converting all the post data into json parse
+app.use(cors());//converting all the
 app.get("/", (request, response) => {
   response.send("hello 👍😒🙌🙌😒😒");
 });

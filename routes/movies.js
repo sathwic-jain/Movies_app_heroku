@@ -27,7 +27,7 @@ router.route("/").post(async (request, response) => {
   await AddMovie(data, response);
 })
 
-.get(auth,async (request, response) => {
+.get(async (request, response) => {
   const filter = request.query;
   if (filter.rating) filter.rating = parseInt(filter.rating); //cause rating is a string,but in our data it is in int
   const movie = await GetMovie(filter);

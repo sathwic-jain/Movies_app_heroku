@@ -7,6 +7,7 @@ import {
   GetMovie,
   EditMovieByName,
 } from "../helper.js";
+import {auth} from "../middleware/auth.js";
 
 router.route("/:id").get(async (request, response) => {
   const { id } = request.params;
@@ -26,10 +27,11 @@ router.route("/").post(async (request, response) => {
   await AddMovie(data, response);
 })
 
-.get(async (request, response) => {
+.get(auth,async (request, response) => {
   const filter = request.query;
   if (filter.rating) filter.rating = parseInt(filter.rating); //cause rating is a string,but in our data it is in int
   const movie = await GetMovie(filter);
+  console.log("blaah");
 
   response.send(movie);
 })

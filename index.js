@@ -1,17 +1,26 @@
 import { MongoClient } from "mongodb";
-import{movieRouter} from './routes/movies.js'
+import { movieRouter } from "./routes/movies.js";
+import { userRouter } from "./routes/users.js";
 // const express = require("express");
 import express from "express";
 import dotenv from "dotenv";
-import { GetMovieById, DeleteMovieByID, AddMovie, GetMovie, EditMovieByName } from "./helper.js";
+import bcrypt from "bcrypt";
+import {
+  GetMovieById,
+  DeleteMovieByID,
+  AddMovie,
+  GetMovie,
+  EditMovieByName,
+  genPassword
+} from "./helper.js";
 dotenv.config();
 import cors from "cors";
 console.log(process.env.MONGO_URL);
 
 const app = express();
-const PORT =  process.env.PORT ||9000;
-app.use(express.json());//converting all the post data into json parse
-app.use(cors());//converting all the
+const PORT = process.env.PORT || 9000;
+app.use(express.json()); //converting all the post data into json parse//inbuilt middleware
+app.use(cors()); //converting all the request //is a third party middleware
 app.get("/", (request, response) => {
   response.send("hello 👍😒🙌🙌😒😒");
 });
@@ -25,11 +34,12 @@ export async function createConnection() {
   const client = new MongoClient(MONGO_URL);
   await client.connect();
   console.log("mongo connected");
- 
+
   return client;
 }
 createConnection();
-app.use("/movies",movieRouter)
+app.use("/movies", movieRouter);
+app.use("/users", userRouter);
 const client = await createConnection();
 // const movies = [
 //   {
@@ -121,7 +131,6 @@ const client = await createConnection();
 
 // //check notebook for a simpler code
 
-
 // //for rating and language using normal array synta
 
 // // app.get("/movies", (request, response) => {
@@ -153,7 +162,12 @@ const client = await createConnection();
 //   const movied = await EditMovieByName(name, request);
 //     response.send(movied);
 // });
+// export async function genPassword(password) {
+//   const salt = await bcrypt.genSalt(10);
+//   const hashedpassword = await bcrypt.hash(password, salt);
+//   console.log(salt);
+//   console.log(hashedpassword);
+//   return hashedpassword;
+// }
 
-
-export {client};
-
+export { client };

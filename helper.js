@@ -3,6 +3,7 @@ import { client } from "./index.js";
 import bcrypt from "bcrypt";
 import { response } from "express";
 import jwt from "jsonwebtoken";
+import { ObjectId } from "bson";
 
 
 export async function GetMovieById(id) {
@@ -10,7 +11,7 @@ export async function GetMovieById(id) {
   const movie = await client
     .db("second")
     .collection("movies")
-    .findOne({ id: +id });
+    .findOne({ _id: ObjectId(id) });
   return movie;
 }
 export async function DeleteMovieByID(id) {
@@ -18,7 +19,7 @@ export async function DeleteMovieByID(id) {
   const movie = await client
     .db("second")
     .collection("movies")
-    .deleteOne({ id: +id });
+    .deleteOne({ _id: ObjectId(id) });
   return movie;
 }
 export async function AddMovie(data, response) {

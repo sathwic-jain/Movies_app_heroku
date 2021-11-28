@@ -22,12 +22,12 @@ router.route("/:id").get(async (request, response) => {
 
 //post using postman
 
-router.route("/").post(async (request, response) => {
+router.route("/").post(auth,async (request, response) => {
   const data = request.body;
   await AddMovie(data, response);
 })
 
-.get(auth,async (request, response) => {
+.get(async (request, response) => {
   const filter = request.query;
   if (filter.rating) filter.rating = parseInt(filter.rating); //cause rating is a string,but in our data it is in int
   const movie = await GetMovie(filter);

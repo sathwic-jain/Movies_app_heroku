@@ -28,7 +28,7 @@ router.route("/:id").get(async (request, response) => {
 
 //post using postman
 
-router.route("/").post(auth,async (request, response) => {
+router.route("/").post(async (request, response) => {
   const data = request.body;
   await AddMovie(data, response);
 })

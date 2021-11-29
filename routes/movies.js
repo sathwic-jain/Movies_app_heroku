@@ -30,6 +30,7 @@ router.route("/:id").get(async (request, response) => {
 
 router.route("/").post(async (request, response) => {
   const data = request.body;
+  console.log(data);
   await AddMovie(data, response);
 })
 

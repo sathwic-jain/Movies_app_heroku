@@ -5,7 +5,6 @@ import { response } from "express";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "bson";
 
-
 export async function GetMovieById(id) {
   // const client = await createConnection();
   const movie = await client
@@ -46,12 +45,22 @@ export async function EditMovieById(id, request) {
     .db("second")
     .collection("movies")
     // .findOne({name:name})
-    .updateOne({_id: ObjectId(id) }, { $set: { rating: request.body.rating } }); //check using fineOne if you got the correct collection or not
+    .updateMany(
+      { _id: ObjectId(id) },
+      {
+        $set: {
+          rating: request.body.rating,
+          name: request.body.name,
+          image: request.body.image,
+          summary: request.body.summary
+        },
+      }
+    ); //check using fineOne if you got the correct collection or not
 
   const movie = await client
     .db("second")
     .collection("movies")
-    .findOne({ _id:ObjectId(id) });
+    .findOne({ _id: ObjectId(id) });
   return movie;
 }
 
@@ -79,13 +88,10 @@ export async function Addusers({ username, password }) {
     .findOne({ username: username });
   if (existing) return "Username exists!!Try logging in🙌";
   else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*]).{8,}$/g.test(
-      password
-    )
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*]).{8,}$/g.test(password)
   )
     return "Password pattern not met";
   else {
-    
     const hpassword = await genPassword(password);
     const Users = await client
       .db("accounts")
@@ -100,15 +106,14 @@ export async function Login({ username, password }) {
     .db("accounts")
     .collection("signup")
     .findOne({ username: username });
-    
-  if ((userLOGIN)) {
-    const token=jwt.sign({id:userLOGIN._id}, process.env.SECRET_KEY)
+
+  if (userLOGIN) {
+    const token = jwt.sign({ id: userLOGIN._id }, process.env.SECRET_KEY);
     console.log(token);
     const pass = await bcrypt.compare(password, userLOGIN.password);
     if (pass) return "true";
     else return null;
-  }
-  else {
+  } else {
     console.log("fked up");
     return null;
   }

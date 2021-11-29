@@ -5,7 +5,7 @@ import {
   DeleteMovieByID,
   AddMovie,
   GetMovie,
-  EditMovieByName,
+  EditMovieById,
 } from "../helper.js";
 import {auth} from "../middleware/auth.js";
 
@@ -18,6 +18,12 @@ router.route("/:id").get(async (request, response) => {
   const { id } = request.params;
   await DeleteMovieByID(id);
   response.send("done"); //find is better as it will return undefined if the id is not found
+})
+.put( async (request, response) => {
+  const { id } = request.params;
+  console.log(request.params, request.body);
+  const movied = await EditMovieById(id, request);
+  response.send(movied);
 });
 
 //post using postman
@@ -36,11 +42,6 @@ router.route("/").post(auth,async (request, response) => {
   response.send(movie);
 })
 
-.put( async (request, response) => {
-  const { name } = request.query;
-  console.log(request.query, request.body);
-  const movied = await EditMovieByName(name, request);
-  response.send(movied);
-});
+
 
 export const movieRouter = router;

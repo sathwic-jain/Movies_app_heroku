@@ -40,18 +40,18 @@ export async function GetMovie(filter) {
   return movie;
 }
 
-export async function EditMovieByName(name, request) {
+export async function EditMovieById(id, request) {
   // const client = await createConnection();
   const result = await client
     .db("second")
     .collection("movies")
     // .findOne({name:name})
-    .updateOne({ name: name }, { $set: { rating: request.body } }); //check using fineOne if you got the correct collection or not
+    .updateOne({_id: ObjectId(id) }, { $set: { rating: request.body.rating } }); //check using fineOne if you got the correct collection or not
 
   const movie = await client
     .db("second")
     .collection("movies")
-    .findOne({ name: name });
+    .findOne({ _id:ObjectId(id) });
   return movie;
 }
 

@@ -4,15 +4,8 @@ import { userRouter } from "./routes/users.js";
 // const express = require("express");
 import express from "express";
 import dotenv from "dotenv";
-import bcrypt from "bcrypt";
-import {
-  GetMovieById,
-  DeleteMovieByID,
-  AddMovie,
-  GetMovie,
-  EditMovieByName,
-  genPassword
-} from "./helper.js";
+
+
 dotenv.config();
 import cors from "cors";
 console.log(process.env.MONGO_URL);
